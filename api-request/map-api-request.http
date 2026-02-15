@@ -1,0 +1,27 @@
+GET http://localhost:8000/employee
+###
+GET http://localhost:8000/employee/email/tural.mamedov2@company.com
+###
+POST http://localhost:8000/employee/
+Content-Type: application/json
+
+{
+  "firstName": "Tural",
+  "lastName": "Mamedov",
+  "password": "password"
+}
+###
+PUT http://localhost:8000/employee/
+Content-Type: application/json
+
+{
+  "email": "tural.mamedov@company.com",
+  "employee": {
+    "firstName": "Tural2",
+    "lastName": "Mamedov2",
+    "password": "password",
+    "email": "tural.mamedov2@company.com"
+  }
+}
+###
+DELETE http://localhost:8000/employee/tural.mamedov2@company.com
