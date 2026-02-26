@@ -1,13 +1,15 @@
 package com.anvar.em.employee_management.services;
 
 import com.anvar.em.employee_management.entities.Employee;
-import com.anvar.em.employee_management.exceptions.InvalidCredetialsException;
+import com.anvar.em.employee_management.exceptions.InvalidCredentialsException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,16 +28,21 @@ public class AuthenticationService {
 
     public Employee loginEmployee(String email, String password,
                                   HttpServletRequest request, HttpServletResponse response) {
-        try{
+        try {
             UsernamePasswordAuthenticationToken authenticationToken
                     = UsernamePasswordAuthenticationToken.unauthenticated(email, password);
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             if (authentication.isAuthenticated()) {
+                SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+                context.setAuthentication(authentication);
+                securityContextHolderStrategy.setContext(context);
+                securityContextRepository.saveContext(context, request, response);
 
             }
+            return employeeService.readEmployeeByEmail(email);
 
         } catch (Exception e) {
-            throw new InvalidCredetialsException("Username or password is incorrect");
+            throw new InvalidCredentialsException("Username or password is incorrect");
         }
     }
 

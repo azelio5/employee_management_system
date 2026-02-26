@@ -14,9 +14,9 @@ public class EmployeeManagementApplication {
     }
 
     @Bean
-    CommandLineRunner run(EmployeeService employeeService) {
+    CommandLineRunner run() {
         return args -> {
-            employeeService.loadEmployeeData();
+        //    employeeService.loadEmployeeData();
         };
     }
 }
