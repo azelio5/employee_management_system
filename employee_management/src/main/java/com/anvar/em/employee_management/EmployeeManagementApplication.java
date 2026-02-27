@@ -1,5 +1,6 @@
 package com.anvar.em.employee_management;
 
+import com.anvar.em.employee_management.services.AuthenticationService;
 import com.anvar.em.employee_management.services.EmployeeService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,9 +15,10 @@ public class EmployeeManagementApplication {
     }
 
     @Bean
-    CommandLineRunner run() {
+    CommandLineRunner run(AuthenticationService authenticationService) {
         return args -> {
         //    employeeService.loadEmployeeData();
+            authenticationService.loadUserInformation();
         };
     }
 }
